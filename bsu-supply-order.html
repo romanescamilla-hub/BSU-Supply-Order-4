@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boise State University - Supply Order Request</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(to bottom right, #003366, #0047AB);
+            min-height: 100vh;
+            padding: 3rem 1rem;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 0.5rem 0.5rem 0 0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #0033A0;
+            font-size: 2.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header h2 {
+            color: #D64309;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 0 0 0.5rem 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #D1D5DB;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #0033A0;
+        }
+        
+        .items-container {
+            border: 2px solid #D1D5DB;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+        
+        @media (min-width: 768px) {
+            .items-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: #F9FAFB;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        
+        .item-row:hover {
+            background: #F3F4F6;
+        }
+        
+        .item-label {
+            font-size: 0.875rem;
+            color: #374151;
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        input[type="number"] {
+            width: 80px;
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #D1D5DB;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #0033A0;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background-color: #D64309;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            filter: brightness(1.1);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #888;
+        }
+        
+        .alert {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .alert-success {
+            background: #D1FAE5;
+            border: 2px solid #6EE7B7;
+            color: #065F46;
+        }
+        
+        .alert-error {
+            background: #FEE2E2;
+            border: 2px solid #FCA5A5;
+            color: #991B1B;
+        }
+        
+        .info-box {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #EFF6FF;
+            border-left: 4px solid #0033A0;
+            border-radius: 0.25rem;
+        }
+        
+        .info-box p {
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        
+        .info-box strong {
+            color: #0033A0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BOISE STATE UNIVERSITY</h1>
+            <h2>Supply Order Request</h2>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="location">Location *</label>
+                <select id="location">
+                    <option value="">Select a location...</option>
+                    <option value="Varsity Center">Varsity Center</option>
+                    <option value="BFC">BFC</option>
+                    <option value="Stueckle Sky Center">Stueckle Sky Center</option>
+                    <option value="Boas">Boas</option>
+                    <option value="DLP">DLP</option>
+                    <option value="Caven">Caven</option>
+                    <option value="<ISMI>"><ISMI></option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="requesterName">Requester Name *</label>
+                <input type="text" id="requesterName" placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+                <label>Select Items & Quantities *</label>
+                <div class="items-container">
+                    <div class="items-grid" id="itemsGrid"></div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+                Submit Supply Order
+            </button>
+            
+            <div id="alertBox"></div>
+            
+            <div class="info-box">
+                <p><strong>✓ Ready to use:</strong> Orders will be sent to romanescamilla@boisestate.edu</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        emailjs.init('jP7mGp0v-RK1-mu3I');
+        
+        const supplyItems = [
+            'Paper Towel Roll Case',
+            'Fold Paper Towel Case',
+            'White Roll Towels 8x1000 Case',
+            'Small Core Toilet Paper Package',
+            'Regular Toilet Paper Case',
+            'Waxed Bags Case',
+            'Toilet Seat Cover Case',
+            'Nitrile Gloves (XL) Case',
+            'Nitrile Gloves (Large) Case',
+            'Nitrile Gloves (Medium) Case',
+            'Nitrile Gloves (Small) Case',
+            'Black Liners 40x46 Box',
+            'Black Liners 30x36 Box',
+            'Black Liners 24x23 Box',
+            'Recycle Bags 33x40 Box',
+            'Recycle Bags 43x47 Box',
+            'Foaming Hair and Body Shower Shampoo Box',
+            'Foaming Hand Soap Box',
+            'Sanitizer Foam GERM-X Box',
+            'Betco Stix Bowl Cleaner Case',
+            'Betco Rest Stop Case',
+            'PH7Q Dual Fastdraw Dispenser Refill Box',
+            'Clear Image Fastdraw Dispenser Refill Box',
+            'Green Earth Peroxide Fastdraw Dispenser Box Refill',
+            'Best Bet Crème Cleaner Case',
+            'Urinal Deodorizer Case'
+        ];
+        
+        // Populate items grid
+        const itemsGrid = document.getElementById('itemsGrid');
+        supplyItems.forEach(item => {
+            const itemRow = document.createElement('div');
+            itemRow.className = 'item-row';
+            itemRow.innerHTML = `
+                <label class="item-label" for="${item}">${item}</label>
+                <input type="number" id="${item}" min="0" value="" placeholder="0">
+            `;
+            itemsGrid.appendChild(itemRow);
+        });
+        
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+        
+        function getOrderedItems() {
+            const orderedItems = [];
+            supplyItems.forEach(item => {
+                const input = document.getElementById(item);
+                const qty = parseInt(input.value) || 0;
+                if (qty > 0) {
+                    orderedItems.push(`${item}: ${qty}`);
+                }
+            });
+            return orderedItems;
+        }
+        
+        function resetForm() {
+            document.getElementById('location').value = '';
+            document.getElementById('requesterName').value = '';
+            supplyItems.forEach(item => {
+                document.getElementById(item).value = '';
+            });
+        }
+        
+        async function handleSubmit() {
+            const location = document.getElementById('location').value;
+            const requesterName = document.getElementById('requesterName').value;
+            const orderedItems = getOrderedItems();
+            
+            // Validation
+            if (!location || !requesterName) {
+                showAlert('Please fill in location and requester name', 'error');
+                return;
+            }
+            
+            if (orderedItems.length === 0) {
+                showAlert('Please select at least one item with a quantity greater than 0', 'error');
+                return;
+            }
+            
+            // Disable button and show loading
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting Order...';
+            document.getElementById('alertBox').innerHTML = '';
+            
+            try {
+                const templateParams = {
+                    location: location,
+                    requester_name: requesterName,
+                    quantities: orderedItems.join('\n'),
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                };
+                
+                await emailjs.send('service_w6vuipm', 'template_2br3k1t', templateParams);
+                
+                showAlert('Order submitted successfully! A confirmation has been sent to romanescamilla@boisestate.edu', 'success');
+                resetForm();
+            } catch (error) {
+                console.error('EmailJS error:', error);
+                showAlert(`Error: ${error.text || error.message || 'Unknown error'}. Please try again.`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Supply Order';
+            }
+        }
+    </script>
+</body>
+</html>
